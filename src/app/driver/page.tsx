@@ -1,20 +1,21 @@
 'use client'
 
-import { FormEvent, useRef } from "react"
+import { FormEvent, useEffect, useRef } from "react"
 import { useMap } from "../hooks/useMap"
 import useSwr from 'swr'
 import { fetcher } from "../utils"
 import { Route } from "../utils/model"
+import { socket } from "../utils/socket-io"
 
 export default function DriverPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null)
     const map = useMap(mapContainerRef)
-    const { data: routes, error, isLoading } = useSwr<Route[]>('http://localhost:3000/routes', fetcher, { fallbackData: [] })
+    const { data: routes, error, isLoading } = useSwr<Route[]>('http://localhost:3001/api/routes', fetcher, { fallbackData: [] })
 
     const startRoute = async(e: FormEvent) => {
         e.preventDefault()
         const routeId = (document.querySelector('#route') as HTMLSelectElement).value
-        const response = await fetch(`http://localhost:3000/routes/${routeId}`)
+        const response = await fetch(`http://localhost:3001/api/routes/${routeId}`)
         const route: Route = await response.json()
 
         map?.removeAllRoutes()
@@ -36,11 +37,28 @@ export default function DriverPage() {
         for(const step of steps) {
             await new Promise(res => setTimeout(res, 2000))
             map?.moveCar(routeId, step.start_location)
+            socket.emit('new-point', {
+                route_id: routeId,
+                lat: step.start_location.lat,
+                lng: step.start_location.lng
+            })
 
             await new Promise(res => setTimeout(res, 2000))
             map?.moveCar(routeId, step.end_location)
+            socket.emit('new-point', {
+                route_id: routeId,
+                lat: step.end_location.lat,
+                lng: step.end_location.lng
+            })
         }
     }
+    
+    useEffect(() => {
+        socket.connect()
+        return () => {
+            socket.disconnect()
+        }
+    },[])
 
     return (
         <div style={{ display: 'flex', flexDirection: 'row', height: '100%', width: '100%'}}>
