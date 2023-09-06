@@ -1,6 +1,6 @@
 import { Loader } from "@googlemaps/js-api-loader";
 import React, { useEffect, useState } from "react";
-import { Map, getCurrentPosition } from "../core/utils";
+import { Map, getCurrentPosition } from "../utils";
 
 export function useMap(containerRef: React.RefObject<HTMLDivElement>) {
     const [map, setMap] = useState<Map>()

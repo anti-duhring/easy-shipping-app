@@ -3,9 +3,9 @@
 import { FormEvent, useEffect, useRef } from "react"
 import { useMap } from "../hooks/useMap"
 import useSwr from 'swr'
-import { fetcher } from "../utils"
-import { Route } from "../utils/model"
-import { socket } from "../utils/socket-io"
+import { fetcher } from "../core/utils"
+import { Route } from "../core/utils/model"
+import { socket } from "../core/utils/socket-io"
 
 export default function DriverPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null)

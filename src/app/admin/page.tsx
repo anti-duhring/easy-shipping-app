@@ -2,8 +2,8 @@
 
 import { useEffect, useRef } from "react"
 import { useMap } from "../hooks/useMap"
-import { Route } from "../utils/model"
-import { socket } from "../utils/socket-io"
+import { Route } from "../core/utils/model"
+import { socket } from "../core/utils/socket-io"
 
 export default function AdminPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null)
