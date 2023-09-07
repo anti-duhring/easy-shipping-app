@@ -264,23 +264,7 @@ export const makeMarkerIcon = (color: string) => ({
 });
 
 const colors = [
-  "#b71c1c",
-  "#4a148c",
-  "#2e7d32",
-  "#e65100",
-  "#2962ff",
-  "#c2185b",
-  "#FFCD00",
-  "#3e2723",
-  "#03a9f4",
-  "#827717",
-  "#880e4f",
-  "#1a237e",
-  "#006064",
-  "#1b5e20",
-  "#880e4f",
-  "#01579b",
-  "#263238",
+  "#1976d2",
 ];
 
 function convertDirectionsResponseToDirectionsResult(

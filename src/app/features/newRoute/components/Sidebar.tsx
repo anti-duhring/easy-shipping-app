@@ -1,6 +1,7 @@
 import { Map, fetcher } from "@/app/core/utils"
 import { DirectionsResponseData } from "@googlemaps/google-maps-services-js"
 import { Button, Box, Typography, TextField } from "@mui/material"
+import { LoadingButton } from '@mui/lab'
 import { FormEvent, useState } from "react"
 import RouteHint from "./RouteHint"
 
@@ -9,6 +10,7 @@ type Props = {
 }
 export const Sidebar = ({ map }: Props) => {
     const [directionsData, setDirectionsData] = useState<DirectionsResponseData & { request: any }>()
+    const [isLoading, setIsLoading] = useState(false)
 
     const fetchPlaces = async(source: string, destination: string) => {
         const [sourcePlace, destinationPlace] = await Promise.all([
@@ -32,10 +34,12 @@ export const Sidebar = ({ map }: Props) => {
         const source = (document.querySelector('#source') as HTMLInputElement).value
         const destination = (document.querySelector('#destination') as HTMLInputElement).value
         
+        setIsLoading(true)
         const [placeSourceId, placeDestinationId] = await fetchPlaces(source, destination)
         const directions: DirectionsResponseData & { request: any } = await fetcher(`${process.env.NEXT_PUBLIC_API_URL}/directions?originId=${placeSourceId}&destinationId=${placeDestinationId}`)
 
         setDirectionsData(directions)
+        setIsLoading(false)
 
         map?.removeAllRoutes()
         await map?.addRouteWithIcons({
@@ -58,7 +62,7 @@ export const Sidebar = ({ map }: Props) => {
             sx={{
                 flex: 1,
                 padding: '1rem',
-                backgroundColor: theme => theme.palette.background.paper,
+                backgroundColor: '#E2E2E2',
             }}
         >
             <Typography 
@@ -67,23 +71,21 @@ export const Sidebar = ({ map }: Props) => {
             >
                 New route
             </Typography>
-            <form 
-                style={{ 
+            <Box 
+                sx={{ 
                     display: 'flex', 
                     flexDirection: 'column',
                     rowGap: '1rem',
+                    paddingBottom: '1rem'
                 }}
+                component={'form'}
                 onSubmit={searchPlaces}
             >
                 <TextField id="source" name="source" label="Source" />
                 <TextField id="destination" name="destination" label="Destination" />
-                <Button type="submit">Create</Button>
-            </form>
-            {directionsData && <RouteHint
-                startAddress={directionsData.routes[0].legs[0].start_address}
-                endAddress={directionsData.routes[0].legs[0].end_address}
-                createRoute={() => console.log('create route')}
-            />}
+                <LoadingButton loading={isLoading} type="submit">Create</LoadingButton>
+            </Box>
+            {directionsData && <RouteHint directions={directionsData} />}
         </Box>
     )
 }
