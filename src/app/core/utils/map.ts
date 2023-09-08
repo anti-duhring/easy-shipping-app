@@ -319,3 +319,40 @@ function convertDirectionsResponseToDirectionsResult(
     }),
   };
 }
+
+const sleep = async(miliseconds = 2000) => new Promise(res => setTimeout(res, miliseconds))
+
+type TCoord = {
+  lat: number,
+  lng: number
+}
+
+type TSteps = {
+  start_location: TCoord,
+  end_location: TCoord
+}
+
+export const automateTravel = async(
+  routeId: string, 
+  steps: TSteps[], 
+  map: Map, 
+  callback: (params: { route_id: string } & TCoord) => void
+) => {
+  for(const step of steps) {
+    await sleep()
+    map?.moveCar(routeId, step.start_location)
+    callback({
+        route_id: routeId,
+        lat: step.start_location.lat,
+        lng: step.start_location.lng
+    })
+
+    await sleep()
+    map?.moveCar(routeId, step.end_location)
+    callback({
+        route_id: routeId,
+        lat: step.end_location.lat,
+        lng: step.end_location.lng
+    })
+  }
+}
