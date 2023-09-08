@@ -1,18 +1,14 @@
-'use client'
-import { useRef } from "react"
-import { Sidebar } from "../features/newRoute"
-import { useMap } from "../core/hooks"
+import { Main } from "../features/newRoute"
+import { Metadata } from "next"
+
+export const metadata: Metadata = {
+    title: 'New route',
+    description: 'Create a new route'
+}
 
 export default function NewRoutePage() {
-    const mapContainerRef = useRef<HTMLDivElement>(null)
-    const map = useMap(mapContainerRef)
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', height: '100%', width: '100%'}}>
-            <Sidebar map={map} />
-            <main id="map" ref={mapContainerRef} style={{ flex: 4 }}>
-
-            </main>
-        </div>
+        <Main />
     )
 }

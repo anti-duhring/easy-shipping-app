@@ -1,6 +1,8 @@
+'use client'
+
 import { Map, fetcher } from "@/app/core/utils"
 import { DirectionsResponseData } from "@googlemaps/google-maps-services-js"
-import { Button, Box, Typography, TextField } from "@mui/material"
+import { Box, Typography, TextField } from "@mui/material"
 import { LoadingButton } from '@mui/lab'
 import { FormEvent, useState } from "react"
 import RouteHint from "./RouteHint"

@@ -6,6 +6,7 @@ import useSwr from 'swr'
 import { fetcher } from "../core/utils"
 import { Route } from "../core/utils/model"
 import { socket } from "../core/utils/socket-io"
+import { Main } from "../features/driver"
 
 export default function DriverPage() {
     const mapContainerRef = useRef<HTMLDivElement>(null)
@@ -61,28 +62,6 @@ export default function DriverPage() {
     },[])
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'row', height: '100%', width: '100%'}}>
-            <aside>
-                <h1>My shipping</h1>
-                <form 
-                    style={{ display: 'flex', flexDirection: 'column'}}
-                    onSubmit={startRoute}
-                >
-                    <select name="route" id="route">
-                        {isLoading && <option>Loading routes...</option>}
-                        {routes!.map(route => (
-                            <option value={route.id} key={route.id}>
-                                {route.name}
-                            </option>
-                        ))}
-                    </select>
-                    <button type="submit">Start shipping</button>
-                </form>
-                
-            </aside>
-            <main id="map" ref={mapContainerRef} style={{height: '100%', width: '100%'}}>
-
-            </main>
-        </div>
+        <Main />
     )
 }

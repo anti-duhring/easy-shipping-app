@@ -20,6 +20,12 @@ const theme = createTheme({
         fullWidth: true,
       },
     },
+    MuiSelect: {
+      defaultProps: {
+        variant: 'filled',
+        fullWidth: true,
+      },
+    },
     MuiButton: {
       defaultProps: {
         variant: 'contained',
