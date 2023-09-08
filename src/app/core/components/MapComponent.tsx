@@ -1,6 +1,6 @@
 'use client'
 
-import { RefObject, useRef } from "react"
+import { RefObject } from "react"
 
 type Props = {
     componentRef: RefObject<HTMLDivElement>
